@@ -23,20 +23,21 @@ public class Game {
 	private int noOfPlayers;
 	private String playerDecision;
 	private Scanner scanner;
+	private int playerNumber;
 
 	// might not need this
 	List<Player> turnOrder = new ArrayList<Player>();
 
 	// player line-up
-	List<String> players = new ArrayList<String>();
+	List<Player> players = new ArrayList<Player>();
 
 	// also applies for turn order
 
 //	static final int GAME_ID;	Do we need this?
 
 	// created game constructor to always include scanner
-	public Game(Scanner scanner) {
-		this.scanner = scanner; // calling one general scanner, created in main class for all inputs
+	public Game() {
+		this.scanner = new Scanner(System.in); // calling one general scanner, created in main class for all inputs
 	}
 
 	/**
@@ -74,6 +75,69 @@ public class Game {
 		return isStarted;
 	}
 
+	/**
+	 * @param isStarted the isStarted to set
+	 */
+	public void setStarted(boolean isStarted) {
+		this.isStarted = isStarted;
+	}
+
+	/**
+	 * @return the playerName
+	 */
+	public String getPlayerName() {
+		return playerName;
+	}
+
+	/**
+	 * @param playerName the playerName to set
+	 */
+	public void setPlayerName(String playerName) {
+		this.playerName = playerName;
+	}
+
+	/**
+	 * @return the scanner
+	 */
+	public Scanner getScanner() {
+		return scanner;
+	}
+
+	/**
+	 * @param scanner the scanner to set
+	 */
+	public void setScanner(Scanner scanner) {
+		this.scanner = scanner;
+	}
+
+	/**
+	 * @return the turnOrder
+	 */
+	public List<Player> getTurnOrder() {
+		return turnOrder;
+	}
+
+	/**
+	 * @param turnOrder the turnOrder to set
+	 */
+	public void setTurnOrder(List<Player> turnOrder) {
+		this.turnOrder = turnOrder;
+	}
+
+	/**
+	 * @return the players
+	 */
+	public List<Player> getPlayers() {
+		return players;
+	}
+
+	/**
+	 * @param players the players to set
+	 */
+	public void setPlayers(List<Player> players) {
+		this.players = players;
+	}
+
 	public void setUp() {
 
 		// setting number of players
@@ -90,31 +154,46 @@ public class Game {
 		}
 
 		// setting player usernames
-		for (int playerNo = 1; playerNo <= noOfPlayers; playerNo++) {
-			System.out.println("Please enter name for Player No." + playerNo);
-			playerName = scanner.nextLine();
-			players.add(playerName);
-		}
+		int index = 1;
+		for (Player player : players) {
+			playerNumber = index;
+			System.out.println("Please enter name for Player No." + playerNumber);
+			player.setUsername(scanner.nextLine());
+		} index++;
 
 	}
 
-	public void startGame() {
+	public void startGame() throws InterruptedException {
+		
+		Game game = new Game();
 
-		Dice dice = new Dice();
-		for (String playerName : players) {
-			System.out.println("You have been given ... to start.\n" + "Ready to roll the dice?");
-			playerDecision = scanner.nextLine();
-			if (playerDecision != null && playerDecision.equalsIgnoreCase(Game.DECISION_YES)) {
-				System.out.println("Rolling the dice for " + playerName);
-				dice.roll();
-				System.out.println(playerName + ", you have rolled " + dice.getDiceResult() + ".\n");
-			} else {
-				if (playerDecision != null && playerDecision.equalsIgnoreCase(Game.DECISION_NO)) {
-					System.out.println("...");
+		while (!game.isStarted) {
+			for (Player player : players) {
+				System.out.println("You have been given ... to start.\n" + "Ready to roll the dice?"); // how many
+																										// resources?
+				playerDecision = scanner.nextLine();
+				if (playerDecision != null && playerDecision.equalsIgnoreCase(Game.DECISION_YES)) {
+					
+
+				} else {
+					if (playerDecision != null && playerDecision.equalsIgnoreCase(Game.DECISION_NO)) {
+						System.out.println("...");
+						Thread.sleep(2000);
+						continue;
+					}
 				}
 			}
 		}
 	}
+	
+	public void rollDice() {
+		
+		Dice dice = new Dice();
+		System.out.println("Rolling the dice for " + playerName);
+		dice.calculateDiceResult();
+		System.out.println(playerName + ", you have rolled " + dice.getDiceResult() + ".\n");
+	}
+
 
 	public void endGame() {
 

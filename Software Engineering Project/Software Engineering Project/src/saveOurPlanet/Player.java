@@ -11,24 +11,26 @@ import java.util.Map;
  */
 public class Player {
 
-	//instance vars
-	
-	ResourceType resourceType;
-	boolean hasResources;
-	int positionOnBoard;
-	boolean hasQuit;
-	int balance;	
-//	String playerId;
-	String username;
-	
-	
-	Player(String username){
+	// instance vars
+
+	private ResourceType resourceType;
+	private boolean hasResources;
+	private int positionOnBoard;
+	private boolean hasQuit;
+	private int balance;
+//	private String playerId;
+	private String username;
+
+	private Map<ResourceType, Integer> resourceBalance = new HashMap<ResourceType, Integer>();
+
+	Player(String username) {
 //		this.playerId = playerId;
 		this.username = username;
+		this.positionOnBoard = 1; // starting position the same for everybody
 	}
-	
-	//getters and setters
-	
+
+	// getters and setters
+
 //	/**
 //	 * @return the playerId
 //	 */
@@ -47,6 +49,7 @@ public class Player {
 	public String getUsername() {
 		return username;
 	}
+
 	/**
 	 * @param username the username to set
 	 */
@@ -109,13 +112,19 @@ public class Player {
 	public void setResourceBalance(int resourceBalance) {
 		this.balance = resourceBalance;
 	}
-	
-	//methods
-	
-	private Map<ResourceType, Integer> resourceBalance = new HashMap<ResourceType, Integer>();
-	
-	
-	
-	
-	
+
+	// methods
+
+	public void move(int diceResult, int boardSize) {
+		positionOnBoard += diceResult;
+		if (positionOnBoard > boardSize) {
+			positionOnBoard = positionOnBoard % boardSize; // means that new position is the remainder
+			if (positionOnBoard == 0) {
+				positionOnBoard = boardSize;
+			}
+		}
+		System.out.println(username + " moves to position " + positionOnBoard + " : ");
+
+	}
+
 }

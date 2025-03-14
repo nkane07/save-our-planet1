@@ -54,7 +54,7 @@ public class Dice {
 		this.diceResult = diceResult;
 	}
 
-	public int roll() {
+	public int calculateDiceResult() {
 		
 		//put random number generator in here and return
 		value1 = (int) (Math.random() * 6) + 1;
