@@ -3,29 +3,23 @@
  */
 package saveOurPlanet;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * 
  */
 public class Player {
 
 	// instance vars
-
-	private ResourceType resourceType;
 	private boolean hasResources;
 	private int positionOnBoard;
 	private boolean hasQuit;
 	private int balance;
 //	private String playerId;
 	private String username;
+	private boolean ownsFullField;
+	
 
-	private Map<ResourceType, Integer> resourceBalance = new HashMap<ResourceType, Integer>();
-
-	Player(String username) {
+	public Player() {
 //		this.playerId = playerId;
-		this.username = username;
 		this.positionOnBoard = 1; // starting position the same for everybody
 	}
 
@@ -113,8 +107,27 @@ public class Player {
 		this.balance = resourceBalance;
 	}
 
-	// methods
+	/**
+	 * @return the ownsFullField
+	 */
+	public boolean isOwnsFullField() {
+		return ownsFullField;
+	}
 
+	/**
+	 * @param ownsFullField the ownsFullField to set
+	 */
+	public void setOwnsFullField(boolean ownsFullField) {
+		this.ownsFullField = ownsFullField;
+	}
+
+	/**
+	 * Method to change the position of a player on the board, adding their dice
+	 * result to their current position, within the limits of the gameboard.
+	 * 
+	 * @param diceResult
+	 * @param boardSize
+	 */
 	public void move(int diceResult, int boardSize) {
 		positionOnBoard += diceResult;
 		if (positionOnBoard > boardSize) {
@@ -123,8 +136,48 @@ public class Player {
 				positionOnBoard = boardSize;
 			}
 		}
-		System.out.println(username + " moves to position " + positionOnBoard + " : ");
+		System.out.println(username + " moves to position " + " : " + positionOnBoard);
 
 	}
+
+	/**
+	 * Method charges landing tariff ot a player, subtracting and reassigning the
+	 * player's balance.
+	 * 
+	 * @param landingTariff
+	 */
+	public void chargeTariff(int landingTariff) {
+		this.balance -= landingTariff;
+	}
+
+	/**
+	 * Method to add the value of a squares landing tariff to the owner's balance.
+	 * 
+	 * @param landingTariff
+	 */
+	public void gainResources(int landingTariff) {
+		this.balance += landingTariff;
+	}
+
+	/**
+	 * Method to charge a player for upgrades to their property, subtracting the
+	 * development cost and reassigning the balance value.
+	 * 
+	 * @param devCost
+	 */
+	public void chargeDevCost(int devCost) {
+		this.balance -= devCost;
+	}
+
+	public void bankruptPlayer(Player player) {
+		if (player.getResourceBalance() == 0)
+			;
+		System.out.println(player.getUsername() + " has no resources left, and is therefore bankrupt.");
+	}
+
+	public void recyclingCentre(Player player) {
+		this.balance += 200;
+	}
+
 
 }

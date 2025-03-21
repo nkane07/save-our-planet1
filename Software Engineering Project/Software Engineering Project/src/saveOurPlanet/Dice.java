@@ -7,6 +7,8 @@ package saveOurPlanet;
  * 
  */
 public class Dice {
+	
+	public static final String DICE_EMOJI = "U+1F3B2";
 
 	private int value1;
 	private int value2;
@@ -54,6 +56,10 @@ public class Dice {
 		this.diceResult = diceResult;
 	}
 
+	/**
+	 * Simulates rolling of two die combining {@value 1 + 2} to calculate result
+	 * @return value1+value2
+	 */
 	public int calculateDiceResult() {
 		
 		//put random number generator in here and return
@@ -61,10 +67,6 @@ public class Dice {
 		value2 = (int) (Math.random() * 6) + 1;
 		diceResult = value1 + value2;
 		
-		// use these when making the game
-//		public static void main(String[] args) {
-//	        Dice dice = new Dice(); // Create a Dice object
-//	        dice.roll(); 
 		
 		return diceResult;
 	}
