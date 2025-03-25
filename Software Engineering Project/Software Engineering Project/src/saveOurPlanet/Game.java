@@ -25,6 +25,10 @@ public class Game {
 	private String playerDecision;
 	private Scanner scanner;
 	private Player currentPlayer;
+	
+	private boolean triggerBankruptcy = false;
+	private int finalTurnCounter = 0;
+
 
 	// might not need this
 	List<Player> turnOrder = new ArrayList<Player>();
@@ -38,7 +42,7 @@ public class Game {
 
 	// created game constructor to always include scanner
 	public Game(Scanner scanner) {
-		this.scanner = new Scanner(System.in); // calling one general scanner, created in main class for all inputs
+		this.scanner = scanner; // calling one general scanner, created in main class for all inputs
 		this.players = new ArrayList<Player>();
 	}
 
@@ -166,6 +170,32 @@ public class Game {
 	}
 
 	/**
+	 * @return the triggerBankruptcy
+	 */
+	public boolean isBankruptcyTriggered() {
+		return triggerBankruptcy;
+	}
+
+	/**
+	 * @param triggerBankruptcy the triggerBankruptcy to set
+	 */
+	public void triggerBankruptcy(boolean triggerBankruptcy) {
+		this.triggerBankruptcy = triggerBankruptcy;
+	}
+
+	/**
+	 * @return the finalTurnCounter
+	 */
+	public int getFinalTurnCounter() {
+		return finalTurnCounter;
+	}
+
+
+	public void incrementFinalTurnCounter() {
+		this.finalTurnCounter++;
+	}
+
+	/**
 	 * Method to initiate the player line-up and assign player number and names.
 	 */
 	public void setUp() {
@@ -173,25 +203,28 @@ public class Game {
 		// setting number of players
 		System.out.println("Welcome to Save Our Planet!\n"); // insert a little slogan or game instructions here??
 		System.out.println("Please enter the number of players (1 - " + MAX_PLAYERS + ") : ");
+		System.out.print(" > ");
 		noOfPlayers = scanner.nextInt();
-		scanner.nextLine(); // consumes new line
+		scanner.nextLine().trim(); // consumes new line
 
 		players = new ArrayList<Player>();
 
 		if (noOfPlayers >= 2 && noOfPlayers < MAX_PLAYERS) {
 			for (int i = 1; i <= noOfPlayers; i++) {
-				System.out.println("What is Player " + i + "'s name? ");
+				System.out.println("What is Player " + i + "'s name?");
+				System.out.print(" > ");
+				String playerName = scanner.nextLine().trim();
 				Player player = new Player();
-				String playerName = scanner.nextLine();
 				player.setUsername(playerName); //
 				players.add(player);
 			}
 
 		} else {
 			System.out.println(
-					"Sorry, invalid number of players, please enter a number between 1 & " + MAX_PLAYERS + ".");
+					"Sorry, invalid number of players, please enter a number between 1 & " + MAX_PLAYERS + ". ");
+			System.out.print(" > ");
 			noOfPlayers = scanner.nextInt();
-			scanner.nextLine();
+			scanner.nextLine().trim();
 		}
 
 		System.out.println("Number of players: " + noOfPlayers + "\n");
@@ -202,44 +235,14 @@ public class Game {
 	}
 
 	/**
-	 * Method to initiate the game and distribute starting resources.
-	 * 
-	 * @throws InterruptedException
+	 * Method to initiate the game and trigger the runGameLoop
 	 */
 	public void startGame() {
 
 		this.isStarted = true;
-		for (Player player : players) {
-			currentPlayer = player;
-			System.out.println(player.getUsername() + ", you have been given 1500 resources to start.\n"
-					+ "Ready to roll the dice?");
-			player.setResourceBalance(1500);
-			playerDecision = scanner.nextLine();
-			if (playerDecision != null && playerDecision.equalsIgnoreCase(Game.DECISION_YES)) {
-				System.out.println("Rolling the dice for " + player.getUsername());
-			} else {
-				if (playerDecision != null && playerDecision.equalsIgnoreCase(Game.DECISION_NO)) {
-					System.out.println(player.getUsername() + " chose not to roll.");
-					continue;
-				}
-			}
-		}
+		
 	}
 
-	/**
-	 * Method to announce the rolling of the die and the result
-	 */
-	public void rollDice() {
-
-		Player currentPlayer = getCurrentPlayer();
-		String playerName = currentPlayer.getUsername();
-
-		Dice dice = new Dice();
-		System.out.println("Rolling the dice for " + playerName);
-		dice.calculateDiceResult();
-		System.out.println(playerName + ", you have rolled a " + dice.getValue1() + " and a " + dice.getValue2()
-				+ " - that gives you " + dice.getDiceResult() + ".\n");
-	}
 
 	public void endGame() {
 

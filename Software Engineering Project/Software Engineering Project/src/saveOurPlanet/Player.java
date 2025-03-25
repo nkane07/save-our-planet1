@@ -13,10 +13,10 @@ public class Player {
 	private int positionOnBoard;
 	private boolean hasQuit;
 	private int balance;
-//	private String playerId;
 	private String username;
 	private boolean ownsFullField;
-	
+	private boolean hasStarted;
+	private boolean isBankrupt;
 
 	public Player() {
 //		this.playerId = playerId;
@@ -82,7 +82,7 @@ public class Player {
 	/**
 	 * @return the hasQuit
 	 */
-	public boolean isHasQuit() {
+	public boolean hasQuit() {
 		return hasQuit;
 	}
 
@@ -110,7 +110,7 @@ public class Player {
 	/**
 	 * @return the ownsFullField
 	 */
-	public boolean isOwnsFullField() {
+	public boolean ownsFullField() {
 		return ownsFullField;
 	}
 
@@ -122,26 +122,56 @@ public class Player {
 	}
 
 	/**
+	 * @return the hasStarted
+	 */
+	public boolean hasStarted() {
+		return hasStarted;
+	}
+
+	/**
+	 * @param hasStarted the hasStarted to set
+	 */
+	public void setHasStarted(boolean hasStarted) {
+		this.hasStarted = hasStarted;
+	}
+
+	/**
+	 * @return the isBankrupt
+	 */
+	public boolean isBankrupt() {
+		return isBankrupt;
+	}
+
+	/**
+	 * @param isBankrupt the isBankrupt to set
+	 */
+	public void setBankrupt(boolean isBankrupt) {
+		this.isBankrupt = isBankrupt;
+	}
+
+	/**
 	 * Method to change the position of a player on the board, adding their dice
 	 * result to their current position, within the limits of the gameboard.
 	 * 
 	 * @param diceResult
 	 * @param boardSize
 	 */
-	public void move(int diceResult, int boardSize) {
-		positionOnBoard += diceResult;
-		if (positionOnBoard > boardSize) {
-			positionOnBoard = positionOnBoard % boardSize; // means that new position is the remainder
-			if (positionOnBoard == 0) {
-				positionOnBoard = boardSize;
-			}
+	public void move(int diceResult, int boardSize, GameBoard board) {
+		if (boardSize <= 0) {
+			System.out.println("Invalid board size.");
+			return;
 		}
-		System.out.println(username + " moves to position " + " : " + positionOnBoard);
+
+		System.out.println("\nBefore moving, your position on the board is " + positionOnBoard + ": "
+				+ board.getSquareByNumber(positionOnBoard).getSquareName() + "\n");
+
+		positionOnBoard = ((positionOnBoard - 1 + diceResult) % boardSize) + 1;
+		System.out.println(username + ", you have now moved to position " + " : " + positionOnBoard + " - " + board.getSquareByNumber(positionOnBoard).getSquareName() + "\n");
 
 	}
 
 	/**
-	 * Method charges landing tariff ot a player, subtracting and reassigning the
+	 * Method charges landing tariff to a player, subtracting and reassigning the
 	 * player's balance.
 	 * 
 	 * @param landingTariff
@@ -169,15 +199,16 @@ public class Player {
 		this.balance -= devCost;
 	}
 
-	public void bankruptPlayer(Player player) {
-		if (player.getResourceBalance() == 0)
-			;
+	public void bankruptPlayer(Player player, Game game) {
+		if (player.getResourceBalance() == 0 && !game.isBankruptcyTriggered()) {
+			player.setBankrupt(true);
+			game.triggerBankruptcy(true);
+		}
 		System.out.println(player.getUsername() + " has no resources left, and is therefore bankrupt.");
 	}
 
-	public void recyclingCentre(Player player) {
+	public void recyclingCentre() {
 		this.balance += 200;
 	}
-
 
 }

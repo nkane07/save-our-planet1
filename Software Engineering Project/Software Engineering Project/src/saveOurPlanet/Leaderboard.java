@@ -3,22 +3,20 @@
  */
 package saveOurPlanet;
 
+import java.util.Comparator;
+
 /**
  * 
  */
-public class Leaderboard {
+public class Leaderboard implements Comparator<Player>{
 
-	// for leaderboard
-		public static final String GOLD_MEDAL = "U+1F947";
-		public static final String SILVER_MEDAL = "U+1F948";
-		public static final String BRONZE_MEDAL = "U+1F949";
-		
-	
-	public static void displayLeaderboard() {
-		
-		System.out.println("LEADERBOARD");
-		// insert method for calculating player ranking, sorting an array? Assigning values to each players name via map?
-		
+	public static final String GOLD_MEDAL = "\uD83E\uDD47";
+	public static final String SILVER_MEDAL = "\uD83E\uDD48";
+	public static final String BRONZE_MEDAL = "\uD83E\uDD49";
+
+	@Override
+	public int compare(Player p1, Player p2) {
+		return Integer.compare(p2.getResourceBalance(), p1.getResourceBalance());
 	}
 	
 }

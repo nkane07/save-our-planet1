@@ -7,13 +7,13 @@ package saveOurPlanet;
  * 
  */
 public class Dice {
-	
-	public static final String DICE_EMOJI = "U+1F3B2";
+
+	public static final String DICE_EMOJI = "\uD83C\uDFB2";
 
 	private int value1;
 	private int value2;
 	private int diceResult; // added instead of creating type diceResult
-	
+
 	/**
 	 * @return the value1
 	 */
@@ -58,18 +58,17 @@ public class Dice {
 
 	/**
 	 * Simulates rolling of two die combining {@value 1 + 2} to calculate result
+	 * 
 	 * @return value1+value2
 	 */
 	public int calculateDiceResult() {
-		
-		//put random number generator in here and return
+
+		// put random number generator in here and return
 		value1 = (int) (Math.random() * 6) + 1;
 		value2 = (int) (Math.random() * 6) + 1;
 		diceResult = value1 + value2;
-		
-		
+
 		return diceResult;
 	}
-	
-	
+
 }

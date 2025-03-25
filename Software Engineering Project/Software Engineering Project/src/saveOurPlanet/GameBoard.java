@@ -7,89 +7,88 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 /**
  * 
  */
 public class GameBoard {
+	
+	public Scanner scanner;
 
-	public static final String CHEQUERED_FLAG = "U+1F3C1";
-	public static final String WIND_EMOJI = "U+1F32C";
-	public static final String WATER_EMOJI = "U+1F4A7";
-	public static final String FIRE_EMOJI = "U+1F525";
-	public static final String SOIL_EMOJI = "U+1F331";
-	public static final String VOLCANO_EMOJI = "U+1F30B";
-	public static final String TORNADO_EMOJI = "U+1F32A";
-	public static final String EARTHQUAKE_EMOJI = "U+1F3DA";
-	public static final String SLIDE_EMOJI = "U+1F6DD";
-	public static final String SUN_EMOJI = "U+2600";
-	public static final String WAVE_EMOJI = "U+1F30A";
-	public static final String G8_EMOJI = "U+1F310";
-	public static final String BATTERY_EMOJI = "U+1F50B";
-	public static final String NUCLEAR_EMOJI = "U+2622";
-	public static final String RECYCLING_EMOJI = "U+267B";
-	public static final String SLEEPING_EMOJI = "U+1F4A4";
-	public static final String CELEBRATE_EMOJI = "U+1F37E";
+	public static final String CHEQUERED_FLAG = "\uD83C\uDFC1";
+	public static final String WIND_EMOJI = "\uD83C\uDF2C";
+	public static final String WATER_EMOJI = "\uD83D\uDCA7";
+	public static final String FIRE_EMOJI = "\uD83D\uDD25";
+	public static final String SOIL_EMOJI = "\uD83C\uDF31";
+	public static final String VOLCANO_EMOJI = "\uD83C\uDF0B";
+	public static final String TORNADO_EMOJI = "\uD83C\uDF2A";
+	public static final String EARTHQUAKE_EMOJI = "\uD83C\uDFDA";
+	public static final String SLIDE_EMOJI = "\uD83D\uDEDD";
+	public static final String SUN_EMOJI = "\u2600\uFE0F";
+	public static final String WAVE_EMOJI = "\uD83C\uDF0A";
+	public static final String G8_EMOJI = "\uD83C\uDF10";
+	public static final String BATTERY_EMOJI = "\uD83D\uDD0B";
+	public static final String NUCLEAR_EMOJI = "\u2622\uFE0F";
+	public static final String RECYCLING_EMOJI = "\u267B\uFE0F";
+
+
 
 	private int squareNumber;
-	private int boardSize;
-	private static Map<String, Integer> nameToNumberMap;
-	private static Map<Integer, String> numberToNameMap;
+	private Map<String, Integer> nameToNumberMap = new HashMap<String, Integer>();
+	private Map<Integer, String> numberToNameMap = new HashMap<Integer, String>();
 
 	public List<Square> squares;
-	public Map<FieldName, List<Square>> fieldSquares;
+	public Map<FieldName, List<Square>> fieldSquares = new HashMap<FieldName, List<Square>>();
 
-	public GameBoard() {
+	private int boardSize;
 
-		// creating maps to find square number from name, and name from square number.
-		nameToNumberMap = new HashMap<String, Integer>();
-		numberToNameMap = new HashMap<Integer, String>();
-		initializeBoard();
-
-		// creating map to store FieldNames
-		fieldSquares = new HashMap<FieldName, List<Square>>();
-
+	public GameBoard(Scanner scanner) {
+		this.scanner = scanner;
+		initializeBoard(scanner);
+		this.boardSize = squares.size();
 	}
-
-//	public Square(int squareNumber, String squareName, String emoji, boolean isOwned, Player owner, int squareCost,
-//			int landingTariff, int devLevel, int devCost, int devTariff, int majorDevCosts, int majorDevTariff,
-//			FieldName fieldName, Scanner scanner)
-//    CONSTRUCTOR JUST FOR REFERENCE
 
 	/**
 	 * Initialises a new game board, populating the board with squares and square
 	 * details.
 	 */
-	public void initializeBoard() {
+	public void initializeBoard(Scanner scanner) {
 		squares = new ArrayList<>();
 
 		squares.add(new Square(1, "Start Point " + CHEQUERED_FLAG, false, null, 0, 200, 0, 0, 0, 0, 0,
-				FieldName.RECYCLING_CENTRE, null));
-		squares.add(new Square(2, "Wind " + WIND_EMOJI, false, null, 140, 5, 0, 0, 0, 0, 0, FieldName.ELEMENTS, null));
+				FieldName.RECYCLING_CENTRE, scanner));
+		squares.add(new Square(2, "Wind " + WIND_EMOJI, false, null, 140, 5, 0, 0, 0, 0, 0, FieldName.ELEMENTS, scanner));
 		squares.add(new Square(3, "Water " + WATER_EMOJI, false, null, 140, 5, 0, 30, 70, 30, 20, FieldName.ELEMENTS,
-				null));
+				scanner));
 		squares.add(
-				new Square(4, "Fire " + FIRE_EMOJI, false, null, 140, 5, 0, 30, 20, 70, 20, FieldName.ELEMENTS, null));
+				new Square(4, "Fire " + FIRE_EMOJI, false, null, 140, 5, 0, 30, 20, 70, 20, FieldName.ELEMENTS, scanner));
 		squares.add(
-				new Square(5, "Earth " + SOIL_EMOJI, false, null, 140, 5, 0, 30, 70, 70, 20, FieldName.ELEMENTS, null));
-		squares.add(new Square(6, "Battery Storage Plant " + BATTERY_EMOJI, false, null, 400, 200, 0, 100, 200, 200,
-				800, FieldName.RENEWABLE_ENERGY, null));
-		squares.add(new Square(7, "Nuclear Power Plant " + NUCLEAR_EMOJI, false, null, 400, 200, 0, 100, 200, 200, 800,
-				FieldName.CONTROVERSIAL_ENERGY, null));
+				new Square(5, "Earth " + SOIL_EMOJI, false, null, 140, 5, 0, 30, 70, 70, 20, FieldName.ELEMENTS, scanner));
+		squares.add(new Square(6, "Battery Power Plant" + BATTERY_EMOJI, false, null, 400, 200, 0, 100, 200, 200,
+				800, FieldName.CONTROVERSIAL_ENERGY, scanner));
+		squares.add(new Square(7, "Nuclear Power Plant" + NUCLEAR_EMOJI, false, null, 400, 200, 0, 100, 200, 200, 800,
+				FieldName.CONTROVERSIAL_ENERGY, scanner));
 		squares.add(new Square(8, "Solar Farm " + SUN_EMOJI, false, null, 400, 200, 0, 100, 200, 200, 800,
-				FieldName.RENEWABLE_ENERGY, null));
-		squares.add(new Square(9, "Hydroelectric Power Plant " + WAVE_EMOJI, false, null, 400, 200, 0, 100, 200, 200,
-				800, FieldName.RENEWABLE_ENERGY, null));
+				FieldName.RENEWABLE_ENERGY, scanner));
+		squares.add(new Square(9, "Hydroelectric Power " + WAVE_EMOJI, false, null, 400, 200, 0, 100, 200, 200,
+				800, FieldName.RENEWABLE_ENERGY, scanner));
 		squares.add(
-				new Square(10, "G8 Summit " + G8_EMOJI, false, null, 0, 0, 0, 0, 0, 0, 0, FieldName.G8_SUMMIT, null));
-		squares.add(new Square(11, "Mudslide " + SLIDE_EMOJI, false, null, 0, 140, 0, 0, 0, 0, 0,
-				FieldName.NATURAL_DISASTER, null));
-		squares.add(new Square(12, "Volcano " + VOLCANO_EMOJI, false, null, 0, 140, 0, 0, 0, 0, 0,
-				FieldName.NATURAL_DISASTER, null));
-		squares.add(new Square(13, "Tornado " + TORNADO_EMOJI, false, null, 140, 5, 0, 30, 70, 70, 20,
-				FieldName.NATURAL_DISASTER, null));
-		squares.add(new Square(14, "Earthquake " + EARTHQUAKE_EMOJI, false, null, 140, 5, 0, 30, 70, 70, 20,
-				FieldName.NATURAL_DISASTER, null));
+				new Square(10, "G8 Summit " + G8_EMOJI, false, null, 0, 0, 0, 0, 0, 0, 0, FieldName.G8_SUMMIT, scanner));
+		squares.add(new Square(11, "Mudslide " + SLIDE_EMOJI, false, null, 0, 150, 0, 0, 0, 0, 0,
+				FieldName.NATURAL_DISASTER, scanner));
+		squares.add(new Square(12, "Volcano " + VOLCANO_EMOJI, false, null, 0, 150, 0, 0, 0, 0, 0,
+				FieldName.NATURAL_DISASTER, scanner));
+		squares.add(new Square(13, "Tornado " + TORNADO_EMOJI, false, null, 0, 150, 0, 0, 0, 0, 0,
+				FieldName.NATURAL_DISASTER, scanner));
+		squares.add(new Square(14, "Earthquake " + EARTHQUAKE_EMOJI, false, null, 0, 150, 0, 0, 0, 0, 0,
+				FieldName.NATURAL_DISASTER, scanner));
+		
+		for (Square square : squares) {
+			FieldName field = square.getFieldName();
+			fieldSquares.computeIfAbsent(field, k -> new ArrayList<>()).add(square);
+		}
+
 
 		// populating the Name to Number HashMap
 		nameToNumberMap.put("Start Point" + CHEQUERED_FLAG, 1);
@@ -167,13 +166,6 @@ public class GameBoard {
 	 */
 	public int getBoardSize() {
 		return boardSize;
-	}
-
-	/**
-	 * @param boardSize the boardSize to set
-	 */
-	public void setBoardSize(int boardSize) {
-		this.boardSize = squares.size();
 	}
 
 	/**
