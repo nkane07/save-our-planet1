@@ -58,13 +58,13 @@ public class GameBoard {
 
 		squares.add(new Square(1, "Start Point " + CHEQUERED_FLAG, false, null, 0, 200, 0, 0, 0, 0, 0,
 				FieldName.RECYCLING_CENTRE, scanner));
-		squares.add(new Square(2, "Wind " + WIND_EMOJI, false, null, 140, 5, 0, 0, 0, 0, 0, FieldName.ELEMENTS, scanner));
-		squares.add(new Square(3, "Water " + WATER_EMOJI, false, null, 140, 5, 0, 30, 70, 30, 20, FieldName.ELEMENTS,
+		squares.add(new Square(2, "Wind " + WIND_EMOJI, false, null, 140, 50, 0, 0, 0, 0, 0, FieldName.ELEMENTS, scanner));
+		squares.add(new Square(3, "Water " + WATER_EMOJI, false, null, 140, 50, 0, 30, 70, 30, 20, FieldName.ELEMENTS,
 				scanner));
 		squares.add(
-				new Square(4, "Fire " + FIRE_EMOJI, false, null, 140, 5, 0, 30, 20, 70, 20, FieldName.ELEMENTS, scanner));
+				new Square(4, "Fire " + FIRE_EMOJI, false, null, 140, 50, 0, 30, 20, 70, 20, FieldName.ELEMENTS, scanner));
 		squares.add(
-				new Square(5, "Earth " + SOIL_EMOJI, false, null, 140, 5, 0, 30, 70, 70, 20, FieldName.ELEMENTS, scanner));
+				new Square(5, "Earth " + SOIL_EMOJI, false, null, 140, 50, 0, 30, 70, 70, 20, FieldName.ELEMENTS, scanner));
 		squares.add(new Square(6, "Battery Power Plant" + BATTERY_EMOJI, false, null, 400, 200, 0, 100, 200, 200,
 				800, FieldName.CONTROVERSIAL_ENERGY, scanner));
 		squares.add(new Square(7, "Nuclear Power Plant" + NUCLEAR_EMOJI, false, null, 400, 200, 0, 100, 200, 200, 800,

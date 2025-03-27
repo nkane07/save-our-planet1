@@ -224,11 +224,7 @@ public class Gameplay {
 			    }
 			System.out.println(
 					ranking + ". " + player.getUsername() + " : " + player.getResourceBalance() + " resources");
-			ranking++;
-
-		
-
-			
+			ranking++;	
 			}
 		if (!rankedPlayers.isEmpty()) {
 			Player winner = rankedPlayers.get(0);

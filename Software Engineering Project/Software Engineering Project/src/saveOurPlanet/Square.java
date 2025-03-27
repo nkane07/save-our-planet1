@@ -420,7 +420,7 @@ public class Square {
 	public void handleNaturalDisaster(Player player, Square landedSquare, Game game, Questions questions) {
 		System.out.println("Oh no! You landed right in the middle of the " + landedSquare.getSquareName() + "!\n");
 		System.out.println("You could pay for disaster relief to help restore the area.");
-		System.out.println("And maybe your environmental expertise can help..." + THINKING_EMOJI + "\n");
+		System.out.println("And maybe your environmental 'know-how' can help..." + THINKING_EMOJI + "\n");
 		System.out.println("Would you like to answer a question to reduce the cost? (Y / N)");
 		System.out.print(" > ");
 		String decision = game.getScanner().next().trim();
