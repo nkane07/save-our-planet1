@@ -25,13 +25,8 @@ public class Game {
 	private String playerDecision;
 	private Scanner scanner;
 	private Player currentPlayer;
-	
 	private boolean triggerBankruptcy = false;
 	private int finalTurnCounter = 0;
-
-
-	// might not need this
-	List<Player> turnOrder = new ArrayList<Player>();
 
 	// player line-up
 	List<Player> players = new ArrayList<Player>();
@@ -67,7 +62,6 @@ public class Game {
 		this.playerDecision = playerDecision;
 		this.scanner = scanner;
 		this.currentPlayer = currentPlayer;
-		this.turnOrder = turnOrder;
 		this.players = players;
 	}
 
@@ -125,20 +119,6 @@ public class Game {
 	 */
 	public void setScanner(Scanner scanner) {
 		this.scanner = scanner;
-	}
-
-	/**
-	 * @return the turnOrder
-	 */
-	public List<Player> getTurnOrder() {
-		return turnOrder;
-	}
-
-	/**
-	 * @param turnOrder the turnOrder to set
-	 */
-	public void setTurnOrder(List<Player> turnOrder) {
-		this.turnOrder = turnOrder;
 	}
 
 	/**

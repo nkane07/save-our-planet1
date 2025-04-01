@@ -8,7 +8,6 @@ package saveOurPlanet;
  */
 public class Player {
 
-	// instance vars
 	private boolean hasResources;
 	private int positionOnBoard;
 	private boolean hasQuit;
@@ -19,24 +18,10 @@ public class Player {
 	private boolean isBankrupt;
 
 	public Player() {
-//		this.playerId = playerId;
-		this.positionOnBoard = 1; // starting position the same for everybody
+		this.positionOnBoard = 1; 
 	}
 
-	// getters and setters
 
-//	/**
-//	 * @return the playerId
-//	 */
-//	public String getPlayerId() {
-//		return playerId;
-//	}
-//	/**
-//	 * @param playerId the playerId to set
-//	 */
-//	public void setPlayerId(String playerId) {
-//		this.playerId = playerId;
-//	}
 	/**
 	 * @return the username
 	 */
