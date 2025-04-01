@@ -398,8 +398,9 @@ public class Square {
 					if (isCorrect) {
 					devLevel = 4;
 					owner.chargeDevCost(majorDevCosts);
+					devTariff = majorDevTariff;
 					System.out.println("Congratulations! Your " + squareName + " is now a **major development**! " + CRANE_EMOJI + "\n"
-							+ "You can now charge " + majorDevCosts + "each time someone lands there!");
+							+ "You can now charge " + majorDevTariff + "each time someone lands there!");
 					} else {
 						System.out.println("Sorry, your request for planning permission was denied, you can reapply later.");
 					}

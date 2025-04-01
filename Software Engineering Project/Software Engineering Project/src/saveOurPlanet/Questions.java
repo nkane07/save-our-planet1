@@ -262,7 +262,7 @@ public class Questions {
 	public boolean askEthicsQuestion() {
 		Random randEthics = new Random();
 
-		List<Integer> ethicsQuestionIds = new ArrayList<Integer>();
+		List<Integer> ethicsQuestionIds = new ArrayList<>(ethicsQuestionBank.keySet());
 
 		int ethicsQuestionNumber = randEthics.nextInt(ethicsQuestionIds.size());
 		int ethicsQuestionId = ethicsQuestionIds.get(ethicsQuestionNumber);
