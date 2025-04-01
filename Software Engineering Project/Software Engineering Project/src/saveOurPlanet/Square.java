@@ -338,8 +338,8 @@ public class Square {
 			owner.gainResources(landingTariff);
 			System.out.println(
 					player.getUsername() + " paid " + landingTariff + " resources to " + owner.getUsername() + RENT_EMOJI + ".");
-			System.out.println(owner.getUsername() + "now has " + owner.getResourceBalance());
-			System.out.println(player.getUsername() + "you now have " + player.getResourceBalance());
+			System.out.println(owner.getUsername() + " now has " + owner.getResourceBalance());
+			System.out.println(player.getUsername() + " you now have " + player.getResourceBalance());
 		} else {
 			System.out.println(
 					player.getUsername() + " does not have enough resources to pay rent!\n" + "They are now bankrupt ");

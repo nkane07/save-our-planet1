@@ -77,7 +77,7 @@ public class Questions {
 		answerBank.put(7, "C");
 
 		questionBank.put(8, "Which country generates the most electricity from wind energy? Please enter a letter.\n"
-				+ "A) China\n" + "\n" + "B) Germany\n" + "'n" + "C) USA\n" + "\n" + "D) India");
+				+ "A) China\n" + "\n" + "B) Germany\n" + "\n" + "C) USA\n" + "\n" + "D) India");
 		answerBank.put(8, "A");
 
 		questionBank.put(9, "Which gas is the largest contributor to global warming? Please enter a letter.\n"
