@@ -39,114 +39,117 @@ public class Gameplay {
 	 * method for main game loop in order to implement turn-based system
 	 */
 	public void runGameLoop() {
-		Scanner scanner = game.getScanner();
+	    Scanner scanner = game.getScanner();
 
-		System.out.println("Player count in game loop: " + players.size() + "\n");
+	    System.out.println("Player count in game loop: " + players.size() + "\n");
 
-		do {
-			for (Player player : players) {
-				if (player.hasQuit()) {
-					continue;
-				}
-				currentPlayer = player;
-				game.setCurrentPlayer(currentPlayer);
+	    do {
+	        for (Player player : players) {
+	            if (player.hasQuit()) {
+	                continue;
+	            }
+	            currentPlayer = player;
+	            game.setCurrentPlayer(currentPlayer);
 
-				if (!currentPlayer.hasStarted()) {
-					currentPlayer.setResourceBalance(1500);
-					System.out
-							.println("\n" + player.getUsername() + ", you have been given 1500 resources to start.\n");
-					currentPlayer.setHasStarted(true);
-				}
-				System.out.println(currentPlayer.getUsername()
-						+ ", ready to roll the dice? (Y / N), or enter 'Exit' to leave the game.");
-				System.out.print(" > ");
-				String startDecision = scanner.nextLine().trim();
+	            if (!currentPlayer.hasStarted()) {
+	                currentPlayer.setResourceBalance(1500);
+	                System.out.println("\n" + player.getUsername() + ", you have been given 1500 resources to start.\n");
+	                currentPlayer.setHasStarted(true);
+	            }
 
-				if (startDecision != null && startDecision.equalsIgnoreCase(Game.DECISION_EXIT)) {
-					System.out.println("Sorry to see you go " + currentPlayer.getUsername() + ". Come back soon!");
-					currentPlayer.setHasQuit(true);
+	            System.out.println(currentPlayer.getUsername()
+	                    + ", ready to roll the dice? (Y / N), or enter 'Exit' to leave the game.");
+	            System.out.print(" > ");
+	            String startDecision = scanner.nextLine().trim();
 
-					int activePlayers = 0;
-					for (Player p : players) {
-						if (!p.hasQuit()) {
-							activePlayers++;
-						}
-					}
-					if (activePlayers < 2) {
-						System.out.println("Oh no, there aren't enough players left to continue the game!\n");
-						game.setStarted(false);
-						displayLeaderboard();
-						return;
-					} else {
-						System.out.println("There are now " + activePlayers + "left playing the game.");
-					}
-					continue;
-				} else if (startDecision != null && startDecision.equalsIgnoreCase(Game.DECISION_NO)) {
-					System.out.println(player.getUsername() + " chose not to roll on this turn.\n");
-					continue;
-				} else {
-					System.out.println("Rolling the dice for " + currentPlayer.getUsername() + "... " + Dice.DICE_EMOJI + "\n");
-					int rollResult = dice.calculateDiceResult();
-					System.out.println(currentPlayer.getUsername() + ", you have rolled a " + dice.getValue1()
-							+ " and a " + dice.getValue2() + "\n - that gives you " + rollResult + ".\n");
+	            if (startDecision != null && startDecision.equalsIgnoreCase(Game.DECISION_EXIT)) {
+	                System.out.println("Sorry to see you go " + currentPlayer.getUsername() + ". Come back soon!");
+	                currentPlayer.setHasQuit(true);
 
-					int previousPosition = currentPlayer.getPositionOnBoard();
-					currentPlayer.move(rollResult, board.getBoardSize(), board);
-					int newPosition = currentPlayer.getPositionOnBoard();
+	                int activePlayers = 0;
+	                for (Player p : players) {
+	                    if (!p.hasQuit()) {
+	                        activePlayers++;
+	                    }
+	                }
 
-					Square landedSquare = board.getSquareByNumber(newPosition);
+	                if (activePlayers < 2) {
+	                    System.out.println("Oh no, there aren't enough players left to continue the game!\n");
+	                    game.setStarted(false);
+	                    displayLeaderboard();
+	                    return;
+	                } else {
+	                    System.out.println("There are now " + activePlayers + " left playing the game.");
+	                }
+	                continue;
+	            } else if (startDecision != null && startDecision.equalsIgnoreCase(Game.DECISION_NO)) {
+	                System.out.println(player.getUsername() + " chose not to roll on this turn.\n");
+	                continue;
+	            }
 
-					if (currentPlayer.getPositionOnBoard() == 1 && !currentPlayer.hasStarted()) {
-						System.out.println("You’re at the Start Point! " + GameBoard.CHEQUERED_FLAG + "\n");
-						player.setHasStarted(true);
-						continue;
-					} else if (currentPlayer.hasStarted() && newPosition < previousPosition) {
-						System.out.println(GameBoard.RECYCLING_EMOJI + currentPlayer.getUsername()
-								+ ", you've passed the Recycling Centre! You earn 200 resources.");
-						currentPlayer.recyclingCentre();
-						System.out.println("\nYour new resource balance: " + currentPlayer.getResourceBalance());
-					} else if (currentPlayer.getPositionOnBoard() == 1) {
-						System.out.println("\nYou've landed on the Recycling Centre! " + GameBoard.RECYCLING_EMOJI);
-						currentPlayer.recyclingCentre();
-						System.out.println("\nYour new resource balance: " + currentPlayer.getResourceBalance());
-						continue;
-					}
+	            System.out.println("Rolling the dice for " + currentPlayer.getUsername() + "... " + Dice.DICE_EMOJI + "\n");
+	            int rollResult = dice.calculateDiceResult();
+	            System.out.println(currentPlayer.getUsername() + ", you have rolled a " + dice.getValue1()
+	                    + " and a " + dice.getValue2() + "\n - that gives you " + rollResult + ".\n");
 
-					landedSquare.manageSquare(currentPlayer, landedSquare, board, questions, game);
+	            int previousPosition = currentPlayer.getPositionOnBoard();
+	            currentPlayer.move(rollResult, board.getBoardSize(), board);
+	            int newPosition = currentPlayer.getPositionOnBoard();
 
-					offerUpgrades(currentPlayer, board, game.getScanner());
+	            Square landedSquare = board.getSquareByNumber(newPosition);
 
-					if (player.getResourceBalance() <= 0 && !player.isBankrupt()) {
-						player.bankruptPlayer(player, game);
-					}
+	            if (currentPlayer.getPositionOnBoard() == 1 && !currentPlayer.hasStarted()) {
+	                System.out.println("You’re at the Start Point! " + GameBoard.CHEQUERED_FLAG + "\n");
+	                player.setHasStarted(true);
+	                continue;
+	            } else if (currentPlayer.hasStarted() && newPosition < previousPosition) {
+	                System.out.println(GameBoard.RECYCLING_EMOJI + currentPlayer.getUsername()
+	                        + ", you've passed the Recycling Centre! You earn 200 resources.");
+	                currentPlayer.recyclingCentre();
+	                System.out.println("\nYour new resource balance: " + currentPlayer.getResourceBalance());
+	            } else if (currentPlayer.getPositionOnBoard() == 1) {
+	                System.out.println("\nYou've landed on the Recycling Centre! " + GameBoard.RECYCLING_EMOJI);
+	                currentPlayer.recyclingCentre();
+	                System.out.println("\nYour new resource balance: " + currentPlayer.getResourceBalance());
+	                continue;
+	            }
 
-					if (game.isBankruptcyTriggered()) {
-						game.incrementFinalTurnCounter();
-						int activePlayers = 0;
-						for (Player p : players) {
-							if (!p.hasQuit() && !p.isBankrupt()) {
-								activePlayers++;
-							}
-						}
-						 if (game.getFinalTurnCounter() >= activePlayers - 1) {
-						        System.out.println("\n The final round is over! Thanks for playing Save Our Planet! " + WORLD_EMOJI);
-						        game.setStarted(false);
-						        displayLeaderboard();
-						        break;
-						    }
-						}
-				
-					}
-				}	    System.out.println("\n" + STATS_EMOJI + " Updated Resource Balances:");
-			    for (Player p : players) {
-			        if (!p.hasQuit()) {
-			            System.out.println(p.getUsername() + ": " + p.getResourceBalance() + " resources");
-			        }
-			    }
-			
-		}while(game.isStarted()==true);
+	            landedSquare.manageSquare(currentPlayer, landedSquare, board, questions, game);
+	            offerUpgrades(currentPlayer, board, game.getScanner());
 
+	            if (player.getResourceBalance() <= 0 && !player.isBankrupt()) {
+	                player.bankruptPlayer(player, game);
+	            }
+
+	            if (game.isBankruptcyTriggered()) {
+	                game.incrementFinalTurnCounter();
+	                int activePlayers = 0;
+	                for (Player p : players) {
+	                    if (!p.hasQuit() && !p.isBankrupt()) {
+	                        activePlayers++;
+	                    }
+	                }
+
+	                if (game.getFinalTurnCounter() >= activePlayers - 1) {
+	                    System.out.println("\n The final round is over! Thanks for playing Save Our Planet! " + WORLD_EMOJI);
+	                    game.setStarted(false);
+	                    displayLeaderboard();
+	                    break;
+	                }
+	            }
+
+	            System.out.println("\n" + STATS_EMOJI + " Updated Resource Balances:");
+	            for (Player p : players) {
+	                if (!p.hasQuit()) {
+	                    System.out.println(p.getUsername() + ": " + p.getResourceBalance() + " resources");
+	                }
+	            }
+	            System.out.println();
+	        }
+
+	    } while (game.isStarted());
 	}
+
 
 	public void offerUpgrades(Player player, GameBoard board, Scanner scanner) {
 		List<FieldName> fullFields = board.getFullFieldsOwnedBy(player);
