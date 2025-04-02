@@ -17,7 +17,6 @@ public class Square {
 	public static final String THINKING_EMOJI = "\uD83E\uDD14";
 	public static final String CRANE_EMOJI = "\uD83C\uDFD7\uFE0F";
 
-
 	private int squareNumber;
 	private String squareName;
 	private String emoji;
@@ -293,34 +292,32 @@ public class Square {
 	 * @param player
 	 */
 	public void purchase(Player player, Questions questions) {
-			System.out.println("No one's in charge of this square.\n");
-			System.out.println("Investing in " + squareName + " will cost " + getSquareCost() + " resources.\n"
-					+ "If you answer a sustainability question correctly, you can proceed with the purchase.");
-			System.out.println("Would you like to invest in this property? (Y / N)");
-			System.out.print(" > ");
-			String purchaseDecision = scanner.nextLine().trim();
-			if (purchaseDecision.equalsIgnoreCase(Game.DECISION_YES) && player.getResourceBalance() >= squareCost) {
-				boolean isCorrect = questions.askQuestion();
-				if (isCorrect) {
+		System.out.println("No one's in charge of this square.\n");
+		System.out.println("Investing in " + squareName + " will cost " + getSquareCost() + " resources.\n"
+				+ "If you answer a sustainability question correctly, you can proceed with the purchase.");
+		System.out.println("Would you like to invest in this property? (Y / N)");
+		System.out.print(" > ");
+		String purchaseDecision = scanner.nextLine().trim();
+		if (purchaseDecision.equalsIgnoreCase(Game.DECISION_YES) && player.getResourceBalance() >= squareCost) {
+			boolean isCorrect = questions.askQuestion();
+			if (isCorrect) {
 				setOwner(player);
 				isOwned = true;
 				player.setResourceBalance(player.getResourceBalance() - squareCost);
-				System.out.println("Congratulations!  " + CHAMPAGNE_BOTTLE + " " + player.getUsername() + " has harnassed the power of the " + squareName
-						+ " for " + squareCost + " resources!");
+				System.out.println("Congratulations!  " + CHAMPAGNE_BOTTLE + " " + player.getUsername()
+						+ " has harnassed the power of the " + squareName + " for " + squareCost + " resources!");
 				System.out.println("\nThey can now charge " + landingTariff + " if someone lands on " + squareName);
-				} else {
-					System.out.println(" You can't purchase this square this time. Try again later!\n"
-							+ "Moving on...\n");
-				}
-			} else if (player.getResourceBalance() < squareCost) {
-				System.out.println(
-						player.getUsername() + ", you don't have enough resources to purchase " + squareName + ".");
-				System.out.println("It's still up for grabs.");
-			} else if (purchaseDecision.equalsIgnoreCase(Game.DECISION_NO)) {
-				System.out.println(
-						player.getUsername() + " has decided not to invest. So it's still not owned by anyone.");
+			} else {
+				System.out.println(" You can't purchase this square this time. Try again later!\n" + "Moving on...\n");
 			}
+		} else if (player.getResourceBalance() < squareCost) {
+			System.out.println(
+					player.getUsername() + ", you don't have enough resources to purchase " + squareName + ".");
+			System.out.println("It's still up for grabs.");
+		} else if (purchaseDecision.equalsIgnoreCase(Game.DECISION_NO)) {
+			System.out.println(player.getUsername() + " has decided not to invest. So it's still not owned by anyone.");
 		}
+	}
 
 	/**
 	 * Method to charge a landing tariff to a player who lands on a square owned by
@@ -330,16 +327,26 @@ public class Square {
 	 */
 	public void chargeRent(Player player, Square landedSquare) {
 
-		System.out.println(
-				"Uh oh " + player.getUsername() + ", this property is owned by " + landedSquare.getOwner().getUsername() + ". ");
-		System.out.println("You now owe them " + landedSquare.getLandingTariff());
-		if (player.getResourceBalance() >= landingTariff) {
-			player.chargeTariff(landingTariff);
-			owner.gainResources(landingTariff);
-			System.out.println(
-					player.getUsername() + " paid " + landingTariff + " resources to " + owner.getUsername() + RENT_EMOJI + ".");
+		int chargeAmount;
+
+		if (devLevel == 0) {
+			chargeAmount = landingTariff;
+		} else if (devLevel >= 1 && devLevel < 4) {
+			chargeAmount = devTariff;
+		} else {
+			chargeAmount = majorDevTariff;
+		}
+
+		System.out.println("Uh oh " + player.getUsername() + ", this property is owned by "
+				+ landedSquare.getOwner().getUsername() + ". ");
+		System.out.println("You now owe them " + chargeAmount + " resources.");
+		if (player.getResourceBalance() >= chargeAmount) {
+			player.chargeTariff(chargeAmount);
+			owner.gainResources(chargeAmount);
+			System.out.println(player.getUsername() + " paid " + chargeAmount + " resources to " + owner.getUsername()
+					+ RENT_EMOJI + ".");
 			System.out.println(owner.getUsername() + " now has " + owner.getResourceBalance());
-			System.out.println(player.getUsername() + " you now have " + player.getResourceBalance());
+			System.out.println(player.getUsername() + ", you now have " + player.getResourceBalance());
 		} else {
 			System.out.println(
 					player.getUsername() + " does not have enough resources to pay rent!\n" + "They are now bankrupt ");
@@ -369,40 +376,42 @@ public class Square {
 					System.out.println("________________________________________________________________");
 					boolean isCorrect = questions.askQuestion();
 					if (isCorrect) {
-					owner.chargeDevCost(devCost);
-					devLevel++;
-					devTariff += landingTariff / 2;
-					System.out.println(owner.getUsername() + " has deveoped " + squareName + " to level " + devLevel
-							+ ". It will now cost " + devTariff + " resources to land on this property.");
+						owner.chargeDevCost(devCost);
+						devLevel++;
+						devTariff += landingTariff / 2;
+						System.out.println(owner.getUsername() + " has deveoped " + squareName + " to level " + devLevel
+								+ ". It will now cost " + devTariff + " resources to land on this property.");
 					} else {
-						System.out.println("Sorry, you were incorrect! You can't upgrade this time.\n"
-								+ "Moving on...");
+						System.out
+								.println("Sorry, you were incorrect! You can't upgrade this time.\n" + "Moving on...");
 					}
 				} else {
 					System.out.println("Ok, maybe next time!");
 				}
 
 			} else if (devLevel == 3) {
-				System.out.println("Your property is eligible for a **major** development.\n"
-						+ "It will cost you " + majorDevCosts + " resources. Then you can charge " + majorDevTariff + " resources "
-								+ "to anyone who lands there!\n"
-								+ "Proceed? (Y / N)");
+				System.out.println("Your property is eligible for a **major** development.\n" + "It will cost you "
+						+ majorDevCosts + " resources. Then you can charge " + majorDevTariff + " resources "
+						+ "to anyone who lands there!\n" + "Proceed? (Y / N)");
 				System.out.print(" > ");
 				String majorDevDecision = scanner.next().trim();
 
 				if (majorDevDecision.equalsIgnoreCase(Game.DECISION_YES)) {
-					System.out.println("The Enviornmental Protection Agency has held an inquiry to decide to approve your planning permission...\n"
-							+ "They have a tough question for you...");
+					System.out.println(
+							"The Enviornmental Protection Agency has held an inquiry to decide to approve your planning permission...\n"
+									+ "They have a tough question for you...");
 					System.out.println("________________________________________________________________");
 					boolean isCorrect = questions.askEthicsQuestion();
 					if (isCorrect) {
-					devLevel = 4;
-					owner.chargeDevCost(majorDevCosts);
-					devTariff = majorDevTariff;
-					System.out.println("Congratulations! Your " + squareName + " is now a **major development**! " + CRANE_EMOJI + "\n"
-							+ "You can now charge " + majorDevTariff + "each time someone lands there!");
+						devLevel = 4;
+						owner.chargeDevCost(majorDevCosts);
+						devTariff = majorDevTariff;
+						System.out.println("Congratulations! Your " + squareName + " is now a **major development**! "
+								+ CRANE_EMOJI + "\n" + "You can now charge " + majorDevTariff
+								+ "each time someone lands there!");
 					} else {
-						System.out.println("Sorry, your request for planning permission was denied, you can reapply later.");
+						System.out.println(
+								"Sorry, your request for planning permission was denied, you can reapply later.");
 					}
 				} else {
 					System.out.println("No worries — your property stays at Level 3 for now.");
@@ -469,9 +478,12 @@ public class Square {
 			handleNaturalDisaster(player, landedSquare, game, questions);
 			return;
 		} else if (this.getFieldName().equals(FieldName.RECYCLING_CENTRE)) {
-		    System.out.println("You can't purchase the Recycling Centre! It's a public service for everyone." + GameBoard.RECYCLING_EMOJI + "️\n");
-		    return;
-		} else if (!landedSquare.isOwned() && !landedSquare.getFieldName().equals(FieldName.G8_SUMMIT) && !landedSquare.getFieldName().equals(FieldName.NATURAL_DISASTER) && !landedSquare.getFieldName().equals(FieldName.RECYCLING_CENTRE)) {
+			System.out.println("You can't purchase the Recycling Centre! It's a public service for everyone."
+					+ GameBoard.RECYCLING_EMOJI + "️\n");
+			return;
+		} else if (!landedSquare.isOwned() && !landedSquare.getFieldName().equals(FieldName.G8_SUMMIT)
+				&& !landedSquare.getFieldName().equals(FieldName.NATURAL_DISASTER)
+				&& !landedSquare.getFieldName().equals(FieldName.RECYCLING_CENTRE)) {
 			landedSquare.purchase(player, questions);
 			return;
 		} else if (landedSquare.isOwned() && landedSquare.getOwner() != player) {
@@ -483,13 +495,15 @@ public class Square {
 
 	}
 
-	public void upgradePropertyInField(Player player, FieldName field, GameBoard board, Scanner scanner, Questions questions) {
+	public void upgradePropertyInField(Player player, FieldName field, GameBoard board, Scanner scanner,
+			Questions questions) {
 		List<Square> squaresInField = board.getSquaresByField(field);
 
 		System.out.println("\nHere are the properties you can develop in the " + field + " field:\n");
 		for (int i = 0; i < squaresInField.size(); i++) {
 			Square square = squaresInField.get(i);
-			System.out.println("( " + (i + 1) + ") " + square.getSquareName() + " (Level " + square.getDevLevel() + ")");
+			System.out
+					.println("( " + (i + 1) + ") " + square.getSquareName() + " (Level " + square.getDevLevel() + ")");
 
 		}
 
@@ -497,7 +511,7 @@ public class Square {
 		System.out.print(" > ");
 		int choice = scanner.nextInt();
 		scanner.nextLine();
-		
+
 		if (choice > 0 && choice <= squaresInField.size()) {
 			Square selectedSquare = squaresInField.get(choice - 1);
 			System.out.println(
