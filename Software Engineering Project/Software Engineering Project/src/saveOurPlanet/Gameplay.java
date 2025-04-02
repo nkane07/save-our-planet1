@@ -12,7 +12,7 @@ import java.util.Scanner;
  * 
  */
 public class Gameplay {
-	
+
 	public static final String STATS_EMOJI = "\uD83D\uDCCA";
 	public static final String WORLD_EMOJI = "\uD83C\uDF0D";
 	public static final String CELEBRATE_EMOJI = "\uD83C\uDF89";
@@ -128,10 +128,12 @@ public class Gameplay {
 								activePlayers++;
 							}
 						}
-						if (game.getFinalTurnCounter() >= activePlayers - 1) {
-							System.out.println("\n The final round is over! Thanks for playing Save Our Planet! " + WORLD_EMOJI);
-							game.setStarted(false);
-							break;
+						 if (game.getFinalTurnCounter() >= activePlayers - 1) {
+						        System.out.println("\n The final round is over! Thanks for playing Save Our Planet! " + WORLD_EMOJI);
+						        game.setStarted(false);
+						        displayLeaderboard();
+						        break;
+						    }
 						}
 				
 					}
@@ -141,13 +143,9 @@ public class Gameplay {
 			            System.out.println(p.getUsername() + ": " + p.getResourceBalance() + " resources");
 			        }
 			    }
-			    System.out.println();
-			    if (!game.isStarted()) {
-			        displayLeaderboard();
-			    }
-			}
 			
-		} while (game.isStarted() == true);
+		}while(game.isStarted()==true);
+
 	}
 
 	public void offerUpgrades(Player player, GameBoard board, Scanner scanner) {

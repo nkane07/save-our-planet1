@@ -18,9 +18,8 @@ public class Player {
 	private boolean isBankrupt;
 
 	public Player() {
-		this.positionOnBoard = 1; 
+		this.positionOnBoard = 1;
 	}
-
 
 	/**
 	 * @return the username
@@ -151,7 +150,8 @@ public class Player {
 				+ board.getSquareByNumber(positionOnBoard).getSquareName() + "\n");
 
 		positionOnBoard = ((positionOnBoard - 1 + diceResult) % boardSize) + 1;
-		System.out.println(username + ", you have now moved to position " + " : " + positionOnBoard + " - " + board.getSquareByNumber(positionOnBoard).getSquareName() + "\n");
+		System.out.println(username + ", you have now moved to position " + " : " + positionOnBoard + " - "
+				+ board.getSquareByNumber(positionOnBoard).getSquareName() + "\n");
 
 	}
 
@@ -187,9 +187,12 @@ public class Player {
 	public void bankruptPlayer(Player player, Game game) {
 		if (player.getResourceBalance() == 0 && !game.isBankruptcyTriggered()) {
 			player.setBankrupt(true);
-			game.triggerBankruptcy(true);
+			System.out.println(player.getUsername() + " has no resources left, and is therefore bankrupt.");
+			   if (!game.isBankruptcyTriggered()) {
+			        game.triggerBankruptcy(true);
+			        game.setBankruptcyPlayer(player);
+			   }
 		}
-		System.out.println(player.getUsername() + " has no resources left, and is therefore bankrupt.");
 	}
 
 	public void recyclingCentre() {

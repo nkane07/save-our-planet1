@@ -27,6 +27,7 @@ public class Game {
 	private Player currentPlayer;
 	private boolean triggerBankruptcy = false;
 	private int finalTurnCounter = 0;
+	private Player bankruptcyPlayer;
 
 	// player line-up
 	List<Player> players = new ArrayList<Player>();
@@ -147,6 +148,20 @@ public class Game {
 	 */
 	public void setCurrentPlayer(Player currentPlayer) {
 		this.currentPlayer = currentPlayer;
+	}
+
+	/**
+	 * @return the bankruptcyPlayer
+	 */
+	public Player getBankruptcyPlayer() {
+		return bankruptcyPlayer;
+	}
+
+	/**
+	 * @param bankruptcyPlayer the bankruptcyPlayer to set
+	 */
+	public void setBankruptcyPlayer(Player bankruptcyPlayer) {
+		this.bankruptcyPlayer = bankruptcyPlayer;
 	}
 
 	/**
